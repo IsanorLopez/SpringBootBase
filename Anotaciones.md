@@ -68,3 +68,67 @@ public class IndexController {
 }
  
 ~~~
+
+## @ModelAttribute
+
+Permite establecer a cada uno de los **handlers** de un **controller** un determinado atributo(Lista, variable, valor, etc), de manera que cada uno disponga de este y pueda utilizarlo para renderizarlo en su vista.  Es una manera de centralizar cierta informacion que puede ser util entre **handlers**
+
+~~~java
+ @GetMapping("/listar")
+public String listado(Model model) {
+    
+    /*List<Usuario> usuarios = new ArrayList<>();
+
+    usuarios.add(new Usuario("Jan", "Doe", "Jan@correo.com"));
+    usuarios.add(new Usuario("Jhon", "Doe", "Jhon@correo.com"));
+    usuarios.add(new Usuario("Isanor", "Lopez", "isanor@correo.com"));*/
+
+    model.addAttribute("titulo", "Listado de usuarios");
+    
+    return "listado";
+}
+
+@ModelAttribute("usuarios")
+public List<Usuario> obtenerUsuarios(){
+    List<Usuario> usuarios = Arrays.asList(
+        new Usuario("Jan", "Doe", "Jan@correo.com"), 
+        new Usuario("Jhon", "Doe", "Jhon@correo.com"),
+        new Usuario("Isanor", "Lopez", "isanor@correo.com"),
+        new Usuario("tornado", "Lopez", "isanor@correo.com")
+    );
+
+    return usuarios;
+}
+~~~
+
+~~~html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}" />
+</head>
+<body>
+    <span th:text="${titulo}"/>
+    <br/>
+    <span th:if="${usuarios.isEmpty()}" th:text="'no hay usuarios a mostrar'"/>
+    
+    <table th:if="${!usuarios.isEmpty()}" >
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="usuario: ${usuarios}">
+                <td th:text="${usuario.nombre}"></td>
+                <td th:text="${usuario.apellido}"></td>
+                <td th:text="${usuario.correo}"></td>
+            </tr>
+        </tbody>
+    </table>  
+</body>
+~~~
