@@ -22,6 +22,10 @@ A este proceso se le conoce como **inversion of control(IOC)**
 
 Patron implementado dentro del framework, permite la modularidad entre las entidades separando en distintas capas la logica que conforma la funcionalidad del aplicativo.  
 
+### Thymeleaf
+
+Motor de plantillas que permite definir vistas en formato **HTML** conectadas a un controller, generando asi el acoplamiento necesario para el patron **MVC**
+
 ## Modelo de programacion reactiva (webflux)
 
 Paradigma de programacion que se centra en generar logica **asincrona** y **No bloqueante**, es decir permitir el flujo dela funcionalidad independientemente de que se este esperando la respuesta de un recurso en particular.  

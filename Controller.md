@@ -4,13 +4,15 @@ Clase que permite definir dentro de ella todas las funciones que estaran habilit
 
 `*Nota: Por funcionalidad todo controller debe ser publico del mismo modo que sus funciones, adema de deffinirse con la anotacion @Controller`
 
+## Renderizar una vista
+
+Una vez que un controlador es ejecutado por medio de una peticion, este puede renderizar una vista especificada en el **return**
+
+`*Nota: El nombre debe coincidir con el archivo HTML`
+
 ## Pasar datos de un controller a la vista
 
 Dentro de la funcionalidad del aplicativo y sobre todo si se esta utilizando el patron **MVC**, los controladores deberan suministrar informacion a las vistas y por tanto se utilizan las siguientes tecnicas.  
-
-### Model
-
-Es por mucho la mas popular
 
 ~~~java
 package com.bolsadeideas.springboot.web.app.controller;
