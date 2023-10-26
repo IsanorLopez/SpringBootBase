@@ -8,7 +8,7 @@ Determina el comportamiento de una determinada clase como controlador para ser u
 
 ## @RequestMapping
 
-Permite a una determinada funcion de clase **controlador**, manejar la solicitud que ingresa definida por la ruta establecida. Se puede utilizar tanto a nivel metodo como clase, de manera que a nivel clase se pueda establecer una determinada ruta y cada metodo tenga la opcion de concatenar algo a la ruta a nivel clase para un alcance mas especifico o bien, dejar el alcance a nivel general de clase.  
+Permite a una determinada funcion de clase **controller**, manejar la solicitud que ingresa definida por la ruta establecida. Se puede utilizar tanto a nivel metodo como clase, de manera que a nivel clase se pueda establecer una determinada ruta y cada metodo tenga la opcion de concatenar algo a la ruta a nivel clase para un alcance mas especifico o bien, dejar el alcance a nivel general de clase.  
 
 - value: Determina la ruta de la clase o el metodo para ser consumido
 `*Nota: Value viene a ser un alias de path`
