@@ -132,3 +132,97 @@ public List<Usuario> obtenerUsuarios(){
     </table>  
 </body>
 ~~~
+
+## @RequestParam
+
+Permite el leer parametros enviados por medio de la URL, donde **defaultValue** nos permite definir un valor por defecto en el consumo del **endpoint**, por otro lado **required** define si el parametro debe o no ser suministrado a la hora de consumir el endpoint.  
+
+~~~java
+package com.bolsadeideas.springboot.web.app.controller;
+
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+@RequestMapping("/params")
+public class ParamsController {
+
+    @GetMapping("/string")
+    public String param(@RequestParam(defaultValue = "", required = false) String texto,Model model) {
+        model.addAttribute("parametro", "el mensaje es: " + texto);
+        return "params/ver";
+    }
+
+}
+~~~
+
+~~~html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="ver" />
+</head>
+<body>
+    <h1 th:text="${parametro}"/>
+</body>
+~~~
+
+### ejecucion de ruta con parametro
+
+Para este escenario se determina la ruta por medio de un **@**, armando el **path** y entre **()** especificando los parametros requerido para alcanzar la ejecucion del **controller**
+
+~~~java
+package com.bolsadeideas.springboot.web.app.controller;
+
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+@RequestMapping("/params")
+public class ParamsController {
+
+    @GetMapping("/")
+    public String param() {
+        return "params/index";
+    }
+
+    @GetMapping("/string")
+    public String param(@RequestParam(defaultValue = "", required = false) String texto,Model model) {
+        model.addAttribute("parametro", "el mensaje es: " + texto);
+        return "params/ver";
+    }
+
+}
+
+~~~
+
+~~~html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="ver" />
+</head>
+<body>
+    <ul>
+
+        <li>
+            <a th:href="@{/params/string(texto='!Hola mundo!')}"> /params/string/'!Hola mundo!'</a>	
+        </li>
+
+        <li>
+            <a th:href="@{/params/string(texto='!Mundo hola!')}"> /params/string/'!Mundo hola!'</a>
+        </li>
+
+    </ul>
+</body>
+~~~
