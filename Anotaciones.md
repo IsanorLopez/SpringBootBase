@@ -232,3 +232,52 @@ public class ParamsController {
 ~~~
 
 `*Nota: El nombrado similar entre funciones del controller solo se permite cuando los parametros a recibir varian, tecnica denominada como sobre carga`
+
+## @PathVariable
+
+Permite el recolectar parametros de la **URL** funcionando de manera dependiente con **@RequestMapping** o sus abreviaciones, donde se define entre **{}** el nombre del parametro que llevara en el segmento de ruta para de esta manera hacerlo accesible dentro del manejador del **controller**.  
+
+`*Nota: Se debe poner el mismo nombre en la definicion de la ruta y el parametro del controlador`
+
+~~~java
+package com.bolsadeideas.springboot.web.app.controller;
+
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/variables")
+public class PathController {
+
+    @GetMapping("/")
+    public String variables(Model model) {
+    
+        model.addAttribute("titulo", "Recibe datos de la ruta @PathVariable");
+    
+        return "variables/index";
+    }
+
+    @GetMapping("/string/{parametro}")
+    public String variables(Model model, @PathVariable String parametro ) {
+    
+        model.addAttribute("titulo", "Recibe datos de la ruta @PathVariable");
+        model.addAttribute("parametro", "Parametro recibido: " + parametro);
+    
+        return "variables/ver";
+    }
+
+    @GetMapping("/string/{parametro}/{numero}")
+    public String variables(Model model, @PathVariable String parametro, @PathVariable Integer numero) {
+    
+        model.addAttribute("titulo", "Recibe datos de la ruta @PathVariable");
+        model.addAttribute("parametro", "Parametro recibido: " + parametro + " Numero recibido: " + numero);
+    
+        return "variables/ver";
+    }
+
+}
+
+~~~
