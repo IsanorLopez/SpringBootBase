@@ -281,3 +281,81 @@ public class PathController {
 }
 
 ~~~
+
+## Value
+
+Permite establecer un determinado valor a una propiedad definida en **controller**, misma que puede ser renderizada en la vista con **thymeleaf**. con esta funcionaliad se puede tener valores dinamicos renderizados sin necesidad de mover codigo del **controller**.  
+
+~~~java
+package com.bolsadeideas.springboot.web.app.controller;
+
+import java.util.List;
+import java.util.Arrays;
+
+import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.bolsadeideas.springboot.web.app.models.Usuario;
+
+@Controller
+@RequestMapping("/app")
+public class IndexController {
+
+    @Value("${texto.indexcontroller.index.titulo}")
+    private String textoIndex;
+
+    @Value("${texto.indexcontroller.perfil.titulo}")
+    private String textoPerfil;
+
+    @GetMapping({"/index", "/home", "/", ""})
+    public String index(Model model) {
+        model.addAttribute("titulo", "Hola mundo!");
+        model.addAttribute("textoIndex", textoIndex);
+
+        return "index";
+    }
+    
+    @GetMapping("/perfil")
+    public String perfil(Model model) {
+        
+        Usuario usuario = new Usuario();
+        usuario.nombre   = "Isanor";
+        usuario.apellido = "Lopez";
+
+        model.addAttribute("titulo", "Perfil de: ".concat(usuario.nombre));
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("textoPerfil", textoPerfil);
+        
+        return "perfil";
+    }
+}
+~~~
+
+~~~html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}" />
+</head>
+<body>
+    <span th:text="${usuario.nombre}"/>
+    <br/>
+    <span th:text="${usuario.apellido}"/>
+    <br/>
+    <span th:if="${usuario.correo}" th:text="${usuario.correo}"/>
+    <span th:if="${usuario.correo == null }" th:text="'El usuario no tiene correo'"/>
+    
+    <h3  th:text="${textoPerfil}"/>
+</body>
+~~~
+
+~~~properties
+texto.indexcontroller.index.titulo:  Texto desde application.properties index
+texto.indexcontroller.perfil.titulo: Texto desde application.properties perfil
+~~~
