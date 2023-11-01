@@ -359,3 +359,29 @@ public class IndexController {
 texto.indexcontroller.index.titulo:  Texto desde application.properties index
 texto.indexcontroller.perfil.titulo: Texto desde application.properties perfil
 ~~~
+
+## @PropertySources  
+
+Define dentro de una clase **java** a nivel de paquete principal el archivo **.properties** a ser utilizado de manera global en el proyecto, definido con el tag **PropertySource**, donde se utiliza **classpath** como comodin para hacer referencia a la ruta **src/main/resources**
+
+> com.[nombreProyecto].sprinboot.web.app
+
+~~~java
+package com.bolsadeideas.springboot.web.app;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
+
+@Configuration
+@PropertySources({
+    @PropertySource("classpath:textos.properties")
+})
+public class PropertiesConfig {}
+~~~
+
+~~~properties
+texto.indexcontroller.index.titulo:  Texto desde application.properties index
+texto.indexcontroller.perfil.titulo: Texto desde application.properties perfil
+texto.indexcontroller.listar.titulo: Texto desde application.properties listar
+~~~
