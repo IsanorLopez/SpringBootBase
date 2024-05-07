@@ -4,6 +4,12 @@ Framework dedicado a la creacion de microservicios **Backend**, se centra en la 
 
 [Pagina oficial](https://spring.io/projects/spring-boot)
 
+## Spring
+
+Spring framework es un marco de trabajo enfocado en rapidez y productividad que provee multiples plantillas para el desarrollo de soluciones en base a tareas tipicas y repetitivas.  
+
+`*Nota: SpringBoot es la version optimizada en terminos de configuracioes para hacer mas simple el desarrollo y se enfoca en los microservicios`
+
 ## Java
 
 Se utiliza el lenguaje de Java como base para la codificacion en el framework.  
