@@ -13,3 +13,9 @@
 ~~~cmd
     java -jar .\target\[proyecto]-0.0.1.jar
 ~~~
+
+## Obtener dependencias de Maven forzado
+
+~~~cmd
+    mvn clean package -U
+~~~
