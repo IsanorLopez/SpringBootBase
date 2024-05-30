@@ -7,8 +7,8 @@ API interna en springboot que permite implementar mecanismos para manejar la per
 .
 .
 <dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-data-jpa</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
 </dependency>
 .
 .
