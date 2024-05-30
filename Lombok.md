@@ -1,0 +1,9 @@
+# Lombok
+
+~~~xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <scope>provided</scope>
+</dependency>
+~~~
