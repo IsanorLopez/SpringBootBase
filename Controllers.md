@@ -6,23 +6,32 @@ Para que springboot carge los metadatos necesarios y asi otorgarle la funcionali
 
 Como complemento estas entidades se dedican tambien a consumir los **services** que retornan el resultado de una determinada operacion que llego hasta la **BD**  
 
-~~~java
-package com.paymentchain.customer.controller;
+## Inyeccion de repository
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+Se utiliza la notacion **@Autowired** para evitar crear la instancia del **repository** y tener acceso a un objeto que hace uso de todos sus metodos tanto predefinidos como personalizados.  
+
+~~~java
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+package com.paymentchain.customer.controller;
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerRestController {
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     @GetMapping()
     public List<Object> list() {

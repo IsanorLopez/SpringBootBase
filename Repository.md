@@ -8,6 +8,12 @@ Para que springboot carge los metadatos necesarios y asi otorgarle la funcionali
 
 Es requerido definir el tipado dentro del repository considerando el **Entity** asociado y el tipo del campo **@Id** definido como segundo parametro.  
 
+## Extends
+
+Al extender de la clase **JpaRepository** cualquier objeto de la instancia del **repository** tiene acceso a un conjunto de metodos pre-definidos para manejar la data, estos metodos tienen implementada una funcionalidad basica para llevar a cabo un **CRUD**.  
+
+`*Nota: En caso de requerir generar una funcionalidad en particular puede ser definida dentro de la clase repository`
+
 ~~~java
 package com.paymentchain.customer.repository;
 
