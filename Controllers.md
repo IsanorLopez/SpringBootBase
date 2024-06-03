@@ -14,11 +14,29 @@ Se utiliza la notacion **@Autowired** para evitar crear la instancia del **repos
 
 Clase que centraliza multiples metodos para manejar las solicitudes **HTTP**.  
 
+## @PathVariable
+
+Notacion que permite acceder a las variables definidas como parte de la **URL** en la notacion **@GetMapping** estableciendo un parametro como parte del metodo que atiende determinada peticion.  
+
+`*Nota: Se requiere definir un tipado para el mismo.`  
+
+## @RequestBody
+
+Notacion que permite acceder al **Body** de la peticion estableciendo un parametro como parte del metodo que atiende determinada peticion, permitiendo asi hacer uso de el.
+
+`*Nota: Se requiere definir un tipado para el mismo.`  
+
+## @Autowired
+
+Notacion que permite inyectar dependencias dentro del contexto de un proyecto, estableciendo el nexo necesario entre archivos para permitir que la funcionaldiad sea fluida.  
+
 ~~~java
 package com.paymentchain.customer.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,24 +68,47 @@ public class CustomerRestController {
     }
 
     @GetMapping("/{id}")
-    public Customer get(@PathVariable String id) {
-        return null;
+    public ResponseEntity<Customer> get(@PathVariable long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        
+        if (customer.isPresent()) {
+            return new ResponseEntity<>(customer.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Customer input) {
-        return null;
+    public ResponseEntity<Customer> put(@PathVariable long id, @RequestBody Customer input) {
+        Optional<Customer> currentCustomer = customerRepository.findById(id);
+        
+        if (currentCustomer.isPresent()) {
+            Customer updatedCustomer = currentCustomer.get();
+            
+            updatedCustomer.setName(input.getName());
+            updatedCustomer.setPhone(input.getPhone());
+
+            customerRepository.save(updatedCustomer);
+
+            return new ResponseEntity<>(updatedCustomer,HttpStatus.OK);
+        
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Customer input) {
+    public ResponseEntity<Customer> post(@RequestBody Customer input) {
         Customer customer = customerRepository.save(input);
-        return ResponseEntity.ok(customer);
+        return new ResponseEntity<>(customer,HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        return null;
+    public ResponseEntity<Customer> delete(@PathVariable long id) {
+        customerRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
