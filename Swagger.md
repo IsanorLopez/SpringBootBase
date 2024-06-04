@@ -24,7 +24,7 @@ Dentro del contexto de **Springboot** se puede definir como una herramienta que 
 
 Es recomendable desactivar cuando se despligue a produccion, esto relacionado a la funcionalidad que implementa de consumir el **API** ya que no se cuenta con seguridad.  
 
-> ../resources/application.properties
+> ../src/main/resources/application.properties
 
 ~~~properties
     springdoc.api-docs.enabled=false
