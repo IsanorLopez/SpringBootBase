@@ -16,4 +16,18 @@ Se puede especificar una version especifica de una dependencia para un determina
 
 ## Crear modulo hijo
 
+Es necesario definir dentro de un modulo hijo sea microservicio o un nodo POM mas, su relacion directa con el padre haciendo uso de la etiqueta **parent** y definiendo los atributos correspondientes al padre.  
+
 > [Proyecto padre] > Modules > [create/add existing module]
+
+~~~yaml
+<parent>
+    <groupId>com.paymentchain.businessdomain</groupId>
+    <artifactId>bussinesdomain</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</parent>
+~~~
+
+## Redundancias
+
+De trabajar de esta forma se debe cuidar el tema de las importanciones de dependencias redundantes ya que se pueden importar tanto a nivel de padre como a nivel de hijos.  
