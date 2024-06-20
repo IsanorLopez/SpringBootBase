@@ -102,6 +102,10 @@ Propiedad que se define en una relacion entre **entitys** para hacer referencia 
 
 Anotacion que se encarga de definir cuando una propiedad de un determinado **entity** no debe de ser serializado.  
 
+## JoinColumn
+
+Define la propiedad dentro de un **entity** por el que se relacionan dos **entitys**, especificado el campos con su propidad **name**.  
+
 ~~~Java
 @Data
 @Entity
