@@ -17,7 +17,7 @@ Dentro del contexto de **Springboot** se puede definir como una herramienta que 
 ~~~
 
 ~~~URL
-    http://server:port/context-path/swagger-ui.html
+    http://server:port/swagger-ui.html
 ~~~
 
 ## Desactivar
