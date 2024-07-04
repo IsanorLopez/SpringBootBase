@@ -19,16 +19,29 @@ Al extender de la clase **JpaRepository** cualquier objeto de la instancia del *
 
 `*Nota: En caso de requerir generar una funcionalidad en particular puede ser definida dentro de la clase repository`
 
+## Metodos personalizados
+
+Se debe definir el nombre del metodo y utilizar la notacion **@query** para definir la sentencia a ejecutar de lado de la **BD**, esta sentencia definida puede ser un procedimiento almacenado, una vista, una funcion, etc.  
+
+Para el uso de parametros es necesario definirlos con nombre y anteponer el simbolo de **:**.  
+
+`*Nota: Una vez definido el parametro es necesario que exista una referencia a el en el constructor del metodo`
+
 ~~~java
 package com.paymentchain.customer.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.paymentchain.customer.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    
+    @Query("SELECT c FROM Customer c WHERE c.code = :code")
+    public Customer findByCode(String code);
+
+    @Query("SELECT c FROM Customer c WHERE c.iban = :iban")
+    public Customer findByAccount(String iban);
 
 }
 
