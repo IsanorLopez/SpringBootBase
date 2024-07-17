@@ -2,6 +2,8 @@
 
 Framework reactivo de **SpringBoot** destinado a proveer de los metodos necesarios para el consumo de recursos externos a un **MicroServicio**.  
 
+[List-map](https://www.bezkoder.com/reactor-flux-list-map/)
+
 ## WebClient.Builder
 
 Interface que representa el punto de entrada principal para el consumo de determinadas peticiones dentro de un **MicroServicio**, permitiendo ejecutar estos consumos con una funcionalidad **sincrona** o bien **asincrona** en caso de ser necesario.  
@@ -42,13 +44,58 @@ Propiedad que permite definir como tratar la respuesta una vez realizado el cons
 
 Se Obtiene solo el **body** correspondiente a la respuesta por lo que puede ser asignada de manera directa a un **entity**
 
+`*Nota: Regresa solo de 0 a 1 elemento`
+
+### bodyToFlux
+
+Se Obtiene solo el **body** correspondiente a la respuesta por lo que puede ser asignada de manera directa a un **List<entity>**
+
+`*Nota: Regresa solo de 0 a n elementos`
+
+### collectList
+
+Obtiene el **body** correspondiente a la respuesta de forma que los elementos que se obtengan seran contenidos en una lista.  
+
+### collectSortedList
+
+Obtiene el **body** correspondiente a la respuesta de forma que los elementos que se obtengan seran contenidos en una lista **ordenada**.  
+
+### collectMap
+
+Obtiene el **body** correspondiente a la respuesta de forma que los elementos pueden se mapeados bajo cierta logica que permita generar un objeto de tipo **Map**
+
+~~~java
+Map<String, String> map1 = flux
+            .collectMap(
+                item -> item.split(":")[0], 
+                item -> item.split(":")[1]
+            )
+        .block();
+
+map1.forEach((key, value>) -> System.out.println(key + " -> " + value))
+~~~
+
+### collectMultimap
+
+Obtiene el **body** correspondiente a la respuesta de forma que los elementos pueden se mapeados bajo cierta logica que permita generar un objeto de tipo **Map** con multiples valores para cada **key**
+
+~~~java
+Map<String, Collection<String>> map2 = flux
+        .collectMultimap(
+                item -> item.split("_[0-9]+:")[0], 
+                item -> item.split(":")[1])
+        .block();
+        
+map2.forEach((key, value) -> System.out.println(key + " -> " + value));
+~~~
+
 ### toEntity
 
 Se obtiene por completo la respuesta, por lo que es necesario utilizar un **ResponseEntity** y el **entity**.  
 
 ## block
 
-Propiedad que permite definir el comportamiento del consumo a esperar la respuesta y detener la ejecucion hasta que se obtenga una respuesta.  
+Propiedad que permite definir el comportamiento del consumo a esperar la respuesta, deteniendo la ejecucion hasta que se obtenga.  
 
 ## JsonNode.class
 
@@ -59,21 +106,6 @@ Clase base para representar un **JSON**, asignada como la clase sobre la cual ca
 Metodo basico para acceder a una propiedad de **JSON**, se debe definir el nombre del campo como parametro principal o bien el indice que representa dentro de un determinado arreglo de objetos.  
 
 ~~~Java
-import org.springframework.web.reactive.function.client.WebClient;
-
-import com.paymentchain.customer.entity.Customer;
-import com.paymentchain.customer.repository.CustomerRepository;
-
-import io.netty.channel.ChannelOption;
-import reactor.netty.http.client.HttpClient;
-import io.netty.channel.epoll.EpollChannelOption;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
-
-/**
- *
- * @author isanor.lopez
- */
 @RestController
 @RequestMapping("/customer")
 public class CustomerRestController {
@@ -98,9 +130,77 @@ public class CustomerRestController {
             connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS)); //Timeout para escritura
         })
     ;
-    .
-    .
-    .
+
+    @GetMapping()
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> get(@PathVariable long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        
+        if (customer.isPresent()) {
+            return new ResponseEntity<>(customer.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Customer> put(@PathVariable long id, @RequestBody Customer input) {
+        Optional<Customer> currentCustomer = customerRepository.findById(id);
+        
+        if (currentCustomer.isPresent()) {
+            Customer updatedCustomer = currentCustomer.get();
+            
+            updatedCustomer.setName(input.getName());
+            updatedCustomer.setPhone(input.getPhone());
+
+            customerRepository.save(updatedCustomer);
+
+            return new ResponseEntity<>(updatedCustomer,HttpStatus.OK);
+        
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @PostMapping
+    public ResponseEntity<Customer> post(@RequestBody Customer customer) {
+        
+        customer.getProducts().forEach( x -> x.setCustomer(customer));
+        customer.getTransactions().forEach( x -> x.setCustomer(customer));
+        
+        Customer newCustomer = customerRepository.save(customer);
+
+        return new ResponseEntity<>(newCustomer,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Customer> delete(@PathVariable long id) {
+        customerRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/full")
+    public ResponseEntity<Customer> getByCode(@RequestParam String code) {
+        Customer customer = customerRepository.findByCode(code);
+
+        List<CustomerProduct> products = customer.getProducts();
+        products.forEach(product -> {
+            String productName = this.getProductName(product.getProductId());
+            product.setProductName(productName);
+        });
+        
+        List<CustomerTransaction> transactions = getTransactions(customer.getIban());
+        customer.setTransactions(transactions);
+
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
+    
     private String getProductName(long id) {
         
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(httpClient))
@@ -114,10 +214,24 @@ public class CustomerRestController {
                             .bodyToMono( JsonNode.class )
                             .block();
 
-        String name = block.get("name").asText();
+        return block.get("name").asText();
+    }
 
-        return name;
+    private List<CustomerTransaction> getTransactions(String accountIban) {
+        
+        WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(httpClient))
+            .baseUrl("http://localhost:8082/transactions/")
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .build();
+
+        return build.method(HttpMethod.GET)
+                    .uri("accountIban/" + accountIban)
+                    .retrieve()
+                    .bodyToFlux(CustomerTransaction.class)
+                    .collectList()
+                    .block();
 
     }
+
 }
 ~~~
