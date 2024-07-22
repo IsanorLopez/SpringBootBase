@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
     private String profile;
 ~~~
 
-`*Nota: Cuidado con el tipado`
+`*Nota: Simepre se retornara el valor como String`
 
 ### env
 
@@ -36,3 +36,5 @@ private Environment env;
         return "Hi, your property value is :" + env.getProperty("custom.activeprofileName");
     }
 ~~~
+
+`*Nota: Simepre se retornara el valor como String`
