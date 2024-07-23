@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
     private String profile;
 ~~~
 
-`*Nota: Simepre se retornara el valor como String`
+`*Nota: Siempre se retornara el valor como String`
 
 ### env
 
@@ -37,4 +37,4 @@ private Environment env;
     }
 ~~~
 
-`*Nota: Simepre se retornara el valor como String`
+`*Nota: Siempre se retornara el valor como String`

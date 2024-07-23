@@ -26,6 +26,7 @@ Cuando se tienen multiples archivos de configuracion dirigidos hacia ambientes d
 
 - **application.properties**
 - **application-dev.properties**
+- **application-prod.yaml**
 
 ~~~CMD
     java -jar .\target\[proyecto]-0.0.1.jar --spring.profiles.active=dev
