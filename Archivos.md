@@ -6,7 +6,7 @@ Archivo sobre el que se define las dependencias del proyecto asi como las princi
 
 ## application.yml
 
-Archivo que concentra las credenciales y configuracines de conexion hacia servidores.  
+Archivo que concentra las credenciales y configuraciones de conexion hacia servidores.  
 
 ## controllers
 

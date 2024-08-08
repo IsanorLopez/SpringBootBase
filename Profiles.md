@@ -23,3 +23,9 @@ Las configuraciones que se deben definir son principalmente la ruta del reposito
     spring.cloud.config.server.git.clone-on-start=true
     spring.cloud.config.server.git.default-label=main
 ~~~
+
+### Comprobacion de carga de profile
+
+~~~URL
+    http://localhost:8888/[Nombre de archivo de propiedades sin extension]/profile
+~~~
