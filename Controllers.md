@@ -2,9 +2,16 @@
 
 En estos archivos se definen las clases y metodos que contengan la interaccion del usuario con el **API** por medio de la definicion de los **enpoints** y de los **parametros** para operar los mismos.  
 
-Para que springboot carge los metadatos necesarios y asi otorgarle la funcionalidad necesaria se requiere la etiqueta **@Controller**.  
+Para que springboot carge los metadatos necesarios y asi otorgarle la funcionalidad necesaria se requiere la etiqueta **@Controller** o **@RestController**.  
 
 Como complemento estas entidades se dedican tambien a consumir los **services** que retornan el resultado de una determinada operacion que llego hasta la **BD**  
+
+## Controller vs RestController
+
+Ambas son notaciones que permiten a una clase java utilizarse como controlador de las peticiones del API, sin embargo, su diferencia radica en la forma en como interactuan con la peticion y la repuesta del consumo.  
+
+- Controller: Enfocada mas en el modelo **MVC** esta notacion esta mas enfocada en retornar una vista desde el backend.
+- RestControler: Derivada de controller esta notacion esta mas especializada para el retorno de formatos **Json**, siguiendo el principio de generar una api **RestFul**.  
 
 ## Inyeccion de repository
 
