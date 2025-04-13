@@ -8,9 +8,9 @@ Determina el comportamiento de una determinada clase como controlador para ser u
 
 ## @RequestMapping
 
-Dentro de los **controller** permite definir a nivel de clase una ruta de nivel superior, lo que modifica el acceso hacia los **endpoints** de dicha clase, concatenando el termino definido de nivel superior a todos los **paths** definidos en dichos **endpoints**.  
+Permite a una determinada funcion de clase **controller**, manejar la solicitud que ingresa definida por la ruta establecida. Se puede utilizar tanto a nivel metodo como clase, de manera que a nivel clase se pueda establecer una determinada ruta y cada metodo tenga la opcion de concatenar algo a la ruta a nivel clase para un alcance mas especifico o bien, dejar el alcance a nivel general de clase.  
 
-- value: Determina la ruta a nivel superior
+- value: Determina la ruta de la clase o el metodo para ser consumido
 `*Nota: Value viene a ser un alias de path`
 
 - method: requiere una especificacion del tipo de metodo por el que sea consumido **GET,PUT,POST,DELETE** utilizando la clase estatica **RequestMethod**
@@ -149,17 +149,9 @@ La ejecucion con multiples parametros permite el envio de distintos tipos, mismo
 
 Como alternativa al uso de **@RequestParam** esta **HttpServletRequest**, que como tal permite el recibir los parametros enviados al **controller** sin especificar, despues haciendo uso de los mismos considerando el tipo que son, sin embargo esta instruccion es anticuada y no fomenta el uso de buenas practicas ya que requiere por deficion, mas logica para manejar la conversion del tipo de los parametros.  
 
+`*Nota: Si no se quiere mantener una equivalencia estricta entre el QueryParam y el parametro del metodo se puede usar la propiedad name, asi el QueryParam deberia quedar como esta definido en dicha propiedad e internamente desde el metodo tendria el nombre como tal del parametro`  
+
 ~~~java
-package com.bolsadeideas.springboot.web.app.controller;
-
-import org.springframework.ui.Model;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 @Controller
 @RequestMapping("/params")
 public class ParamsController {
@@ -170,7 +162,7 @@ public class ParamsController {
     }
 
     @GetMapping("/string")
-    public String param(Model model, @RequestParam(defaultValue = "", required = false) String texto) {
+    public String param(Model model, @RequestParam(defaultValue = "", required = false, name = "mensaje") String texto) {
         model.addAttribute("parametro", "el mensaje es: " + texto);
         return "params/ver";
     }
@@ -240,14 +232,6 @@ Permite el recolectar parametros de la **URL** funcionando de manera dependiente
 `*Nota: Se debe poner el mismo nombre en la definicion de la ruta y el parametro del controlador`
 
 ~~~java
-package com.bolsadeideas.springboot.web.app.controller;
-
-import org.springframework.ui.Model;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 @Controller
 @RequestMapping("/variables")
 public class PathController {
@@ -287,20 +271,6 @@ public class PathController {
 Permite establecer un determinado valor a una propiedad definida en **controller**, misma que puede ser renderizada en la vista con **thymeleaf**. con esta funcionaliad se puede tener valores dinamicos renderizados sin necesidad de mover codigo del **controller**.  
 
 ~~~java
-package com.bolsadeideas.springboot.web.app.controller;
-
-import java.util.List;
-import java.util.Arrays;
-
-import org.springframework.ui.Model;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.bolsadeideas.springboot.web.app.models.Usuario;
-
 @Controller
 @RequestMapping("/app")
 public class IndexController {
@@ -367,15 +337,9 @@ Define dentro de una clase **java** a nivel de paquete principal el archivo **.p
 > com.[nombreProyecto].sprinboot.web.app
 
 ~~~java
-package com.bolsadeideas.springboot.web.app;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
-
 @Configuration
 @PropertySources({
-    @PropertySource("classpath:textos.properties")
+    @PropertySource(value = "classpath:textos.properties", encoding = "UTF-8")
 })
 public class PropertiesConfig {}
 ~~~
