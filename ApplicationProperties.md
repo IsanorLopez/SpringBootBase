@@ -2,6 +2,8 @@
 
 Archivo donde se definen las configuraciones generales para el API, desde conexiones a BD como variables globales que intervengan en la configuracion del microservicio.  
 
+`*Nota: Este archivo esta desacoplado del compilado final .jar por lo que es posible redefinir las configuraciones una vez desplegado`  
+
 > ../resources/application.properties
 
 ## Acceso a las propiedades
