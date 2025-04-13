@@ -1,12 +1,12 @@
 # Application Properties
 
-Archivo donde se definen las configuraciones generales para el API, desde conexiones a BD como variables globales que interactuen con las dependencias o el codigo en si mismo.  
+Archivo donde se definen las configuraciones generales para el API, desde conexiones a BD como variables globales que intervengan en la configuracion del microservicio.  
 
 > ../resources/application.properties
 
 ## Acceso a las propiedades
 
-Cada propiedad definida dentro de este archivo puede ser accesida para formar parte de la funcionalidad en nuestra **API**, de tal forma que los archivos **.properties** son concentradores de configuracion a nivel global.  
+Cada propiedad definida dentro de este archivo puede ser accedida para formar parte de la funcionalidad en nuestra **API**, de tal forma que los archivos **.properties** son concentradores de configuracion a nivel global.  
 
 ### value
 
@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 ### env
 
-Definiendo la notacion **Autowired** para la instancia de tipo **Enviroment** se genera un nexo con el archivo **.properties** lo que permite accerder por medio de la instancia a los valores definidos en dicho archivo.  
+Definiendo la notacion **Autowired** para la instancia de tipo **Enviroment** se genera un nexo con el archivo **.properties** lo que permite acceder por medio de la instancia a los valores definidos en dicho archivo.  
 
 ~~~java
 import org.springframework.core.env.Environment;
@@ -38,3 +38,31 @@ private Environment env;
 ~~~
 
 `*Nota: Siempre se retornara el valor como String`
+
+## Implementacion endpoints
+
+Se puede definir una propiedad global para ser utilizada de manera configurable en un determinado **endpoint**, mismo que tendra la habilidad de ser dinamico una vez en **produccion**, la implementacion se puede hacer desde un punto global en el **RequestMapping** que plicaria para todos los **endpoints** o bien a nivel de **endpoint individual**.  
+
+~~~properties
+basePath=/desarrollo/detalles-management/api/v1
+endpoint=/details
+~~~
+
+~~~java
+@RestController
+@RequestMapping("${basePath}") //Global
+public class UserRestController {
+
+    @GetMapping("${endpoint}") //Especifico
+    public Map<String, Object> details() {
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("Title", "Spring Boot Application REST");
+        response.put("Name", "Isanor Lopez");
+
+        return response;
+    }
+
+}
+~~~
