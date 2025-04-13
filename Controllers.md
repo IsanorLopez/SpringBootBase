@@ -10,12 +10,18 @@ Como complemento estas entidades se dedican tambien a consumir los **services** 
 
 Ambas son notaciones que permiten a una clase java utilizarse como controlador de las peticiones del API, sin embargo, su diferencia radica en la forma en como interactuan con la peticion y la repuesta del consumo.  
 
-- Controller: Enfocada mas en el modelo **MVC** esta notacion esta mas enfocada en retornar una vista desde el backend.
+- Controller: Enfocada mas en el modelo **MVC** esta notacion esta mas enfocada en retornar una vista desde el backend implementando **Thyemleaf**.
 - RestControler: Derivada de controller esta notacion esta mas especializada para el retorno de formatos **Json**, siguiendo el principio de generar una api **RestFul**.  
 
 ## Inyeccion de repository
 
 Se utiliza la notacion **@Autowired** para evitar crear la instancia del **repository** y tener acceso a un objeto que hace uso de todos sus metodos tanto predefinidos como personalizados.  
+
+`*Nota: Metodo deprecado, unicamente funcional con versiones anteriores de springboot 3.3.2`  
+
+## Inyeccion por constructor
+
+Como metodo nuevo enversiondes desde sprinboot **3.3.2** es la inicializacion e inyeccion de una propiedad por medio del **constructor**, defiendo como paramtro dicha propiedad y asignandose a la instanbcia local que se utilizara, mediante la funcionalidad de **bean**. springboot puede realizar la asociacion y genera la instancia son necesidad de mandar el parametro en si al iteracuar con el controller.  
 
 ## ResponseEntity
 
@@ -66,8 +72,14 @@ import com.paymentchain.customer.repository.CustomerRepository;
 @RequestMapping("/customer")
 public class CustomerRestController {
 
+    /*Deprecado
     @Autowired
-    CustomerRepository customerRepository;
+    CustomerRepository customerRepository;*/
+
+    //Metodo nuevo de inicializacion por constructor
+    private final CustomerRepository customerRepository;
+
+    public CustomerRestController( CustomerRepository customerRepository){ this.customerRepository = customerRepository}
 
     @GetMapping()
     public List<Customer> findAll() {
