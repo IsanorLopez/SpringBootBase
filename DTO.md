@@ -8,7 +8,7 @@ Estas entidades pueden contener tantos campos como sea necesario, sin embargo de
 
 Cuando se tienen 2 clases cuyos campos son necesarios para un determinada respuesta de un **endpoint**, un DTO permite definir un modelo de punto medio, una fusion entre los campos de ambos **modelos** con los campos unicamente necesarios para dar respuesta a la funcionalidad buscada.  
 
-De no contar con la estructura de **DTO** como intermediario se pondria muy complejo el resolver la necesidad del objeto **JSON**, ademas que esta estructura intermedia nos permite el ocultar por razones de seguridad campos no necesariamente utiles al expotar como el caso del **password**.  
+De no contar con la estructura de **DTO** como intermediario se pondria muy complejo el resolver la necesidad del objeto **JSON**, ademas que esta estructura intermedia nos permite el ocultar por razones de seguridad campos no necesariamente utiles al exportar como el caso del **password**.  
 
 ~~~mermaid
 graph TB
