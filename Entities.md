@@ -32,3 +32,18 @@ public class Customer {
 }
 
 ~~~
+
+
+software.amazon.awssdk.services.dynamodb.model.DynamoDbException: ExpressionAttributeValues can only be specified when using expressions: UpdateExpression and ConditionExpression are null (Service: DynamoDb, Status Code: 400, Request ID: ITCDIQ6SN253CRJ50F6GR71RHJVV4KQNSO5AEMVJF66Q9ASUAAJG) (SDK Attempt Count: 1)
+
+software.amazon.awssdk.services.dynamodb.model.DynamoDbException: ExpressionAttributeValues contains invalid key: Syntax error; key: "reintentos" (Service: DynamoDb, Status Code: 400, Request ID: BGCG0C0UCK249N7PKGSLQM5SLNVV4KQNSO5AEMVJF66Q9ASUAAJG) (SDK Attempt Count: 1)
+
+software.amazon.awssdk.services.dynamodb.model.DynamoDbException: ExpressionAttributeValues contains invalid key: Syntax error; key: "fechaModificacion" (Service: DynamoDb, Status Code: 400, Request ID: 7C3Q9L9SDH6G2NMB1J7P6764VNVV4KQNSO5AEMVJF66Q9ASUAAJG) (SDK Attempt Count: 1)
+
+
+software.amazon.awssdk.services.dynamodb.model.DynamoDbException: Value provided in ExpressionAttributeValues unused in expressions: keys: {:fechaCreacion, :fechaModificacion} (Service: DynamoDb, Status Code: 400, Request ID: CSBDU75HBH62FGVAHTPCL4H79BVV4KQNSO5AEMVJF66Q9ASUAAJG) (SDK Attempt Count: 1)
+
+
+/*if (updateExpression.toString().endsWith(", ")) {
+                updateExpression.delete(updateExpression.length() - 2, updateExpression.length());
+            }*/
